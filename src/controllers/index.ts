@@ -1,22 +1,23 @@
 import SocketIO from 'socket.io'
 import socketioJwt from 'socketio-jwt'
-import secret from '../lib/secret'
+import cr from '../lib/cr'
+import sign from '../lib/sign'
+import jwt from 'jsonwebtoken'
+
 export default class BaseController {
   io:SocketIO.Server
   constructor(params:any) {
     this.io = params.io
     this.io.sockets.on('connection', socketioJwt.authorize({
-      secret: secret.jwtsecret,
+      secret: cr.jwt.secret,
       timeout: 15000
     }))
     .on('authenticated', (socket:any)=> {
-      console.log('Name ' + socket.decoded_token.name);
-      socket.on('lol', ()=> {
-        console.log('lol');
+      console.log('auth');
+      socket.on('chechauth', (data:any)=> {
+        data = sign.decode(data.token)
+        socket.emit('auth', {data: data})
       })
-    }).on('lo2l', ()=> {
-      console.log('lol');
-
     })
   }
 }

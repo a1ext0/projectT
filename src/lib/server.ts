@@ -1,11 +1,13 @@
 import cr from './cr';
 import Koa from 'koa'
 import router from '../routers'
+import bodyParser from 'koa-bodyparser'
 
 let env = process.env.NODE_ENV
 const app = new Koa()
 
 
+app.use(bodyParser())
 app.use(router.routes())
 
 const server = app.listen(cr.PORT, cr.HOST, ()=> console.info(`Сервер запущен на ${cr.HOST}:${cr.PORT}`))

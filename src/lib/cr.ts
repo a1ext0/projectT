@@ -23,13 +23,22 @@ class Database {
   port = 5432
 }
 
-const jwtsecret = secret.jwtsecret
+class Jwt {
+  secret = secret.jwtSecret
+  expires = 60*60
+}
+
+class Aes {
+  secret = secret.aesSecret
+}
+
 
 class Credentials {
   HOST = host
   PORT = port
   db = new Database
-  jwtsecret = jwtsecret
+  jwt = new Jwt
+  aes = new Aes
 }
 
 export = new Credentials
