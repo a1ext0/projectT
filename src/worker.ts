@@ -1,7 +1,6 @@
 import server from './lib/server'
 import initSocket from './lib/io'
 import TestController from './controllers/test'
-
 //Инициализация сокета
 const io = initSocket(server)
 

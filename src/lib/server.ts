@@ -1,10 +1,14 @@
 import cr from './cr';
-import http from 'http'
+import Koa from 'koa'
+import router from '../routers'
 
 let env = process.env.NODE_ENV
+const app = new Koa()
 
-const server = http.createServer()
-server.listen(cr.PORT, cr.HOST, ()=> console.info(`Сервер запущен на ${cr.HOST}:${cr.PORT}`))
+
+app.use(router.routes())
+
+const server = app.listen(cr.PORT, cr.HOST, ()=> console.info(`Сервер запущен на ${cr.HOST}:${cr.PORT}`))
 
 server.on('error', (e)=> {
   if (e.name == 'EADDRINUSE') {
