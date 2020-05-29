@@ -1,3 +1,5 @@
+import secret from './secret'
+
 //Создание префикса юзера по первой букве имени
 let host:string;
 let port:number;
@@ -13,9 +15,21 @@ if (env == 'production') {
   port = 7777;
 }
 
+class Database {
+  user = 'postgres'
+  host = 'localhost'
+  database = 'projectT'
+  password = secret.dbpassword
+  port = 5432
+}
+
+const jwtsecret = secret.jwtsecret
+
 class Credentials {
   HOST = host
   PORT = port
+  db = new Database
+  jwtsecret = jwtsecret
 }
 
 export = new Credentials
