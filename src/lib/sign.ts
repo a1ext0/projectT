@@ -4,37 +4,89 @@ import aes from 'crypto-js/aes'
 import cr from './cr'
 
 class Aes {
-  encrypt(msg:string|CryptoJS.LibWordArray){
-    let i = aes.encrypt(msg, 'test')
-    console.log(`dec: ${aes.decrypt(i, 'test')}`);
-    return aes.encrypt(msg, cr.aes.secret)
+  encrypt(msg:string){
+    if (typeof msg == 'string') {
+      try {
+        return aes.encrypt(msg, cr.aes.secret).toString()
+      } catch (error) {
+        console.error(error)
+        return null
+      }
+    } else {
+      console.error('Aes encrypt expects string')
+      return null
+    }
   }
-  decrypt(msg:string|CryptoJS.WordArray){
-    return aes.decrypt(msg, cr.aes.secret)
+  decrypt(msg:string){
+    if (typeof msg == 'string') {
+      try {
+        return aes.decrypt(msg, cr.aes.secret).toString(crypto.enc.Utf8)
+      } catch (error) {
+        console.error(error)
+        return null
+      }
+    } else {
+      console.error('Aes decrypt expects string')
+      return null
+    }
   }
 }
 
-function sign (msg:any) {
-  console.log(`msg1 = ${msg.login}`);
-
-  msg.login = new Aes().encrypt(JSON.stringify(msg)).toString()
-
-  console.log(`msg2 = ${msg.login}`);
-  console.log(`msg3 = ${jwt.sign(msg, cr.jwt.secret)}`);
-  return jwt.sign(msg, cr.jwt.secret)
-}
-
-function decode (msg:any) {
-  console.log(`msg4 = ${msg}`);
-  msg = jwt.decode(msg)
-  console.log(`msg5 = ${msg.login}`);
-  msg = new Aes().decrypt(msg.login).toString(crypto.enc.Utf8)
-  console.log(`msg6 = ${msg}`);
-  return msg
+class Jwt {
+  sign (msg:string|object) {
+    if (typeof msg == 'string') {
+      try {
+        let encrypted = new Aes().encrypt(msg)
+        if (typeof encrypted == 'string') {
+          return jwt.sign(encrypted, cr.jwt.secret)
+        } else {
+          console.error('Jwt sign expects string')
+          return null
+        }
+      } catch (error) {
+        console.error(error)
+        return null
+      }
+    } else if (typeof msg == 'object') {
+      try {
+        let encrypted = new Aes().encrypt(JSON.stringify(msg))
+        if (typeof encrypted == 'string') {
+          return jwt.sign(encrypted, cr.jwt.secret)
+        } else {
+          console.error('Jwt sign expects string')
+          return null
+        }
+      } catch (error) {
+        console.error(error)
+        return null
+      }
+    } else {
+      console.error('Aes encrypt expects string or object')
+      return null
+    }
+  }
+  decode (msg:string) {
+    if (typeof msg == 'string') {
+      try {
+        let decoded = jwt.decode(msg)
+        if (typeof decoded == 'string') {
+          return new Aes().decrypt(decoded)
+        } else {
+          console.error('Aes decrypt expects string')
+          return null
+        }
+      } catch (error) {
+        console.error(error)
+        return null
+      }
+    } else {
+      console.error('Jwt decode expects string')
+      return null
+    }
+  }
 }
 
 export default {
   aes: new Aes(),
-  sign: sign,
-  decode: decode
+  jwt: new Jwt()
 }

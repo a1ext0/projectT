@@ -6,12 +6,10 @@ const router = new Router()
 
 
 router.post('/login', (ctx, next)=> {
-  console.log('login '+typeof ctx.request.body.login);
-
-  if (ctx.request.body.login) {
-    ctx.body = {status: 1, token: sign.sign({login: ctx.request.body.login})}
+  if (ctx.request.body.ld && typeof ctx.request.body.ld == 'object') {
+    ctx.body = {status: 1, token: sign.jwt.sign(ctx.request.body.ld)}
   } else {
-    ctx.body = {status: 1}
+    ctx.body = {status: 'Expected login data'}
   }
 })
 
