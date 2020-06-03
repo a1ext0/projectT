@@ -3,11 +3,12 @@ import Koa from 'koa'
 import router from '../routers'
 import bodyParser from 'koa-bodyparser'
 import cors from 'koa-cors'
+import log from 'koa-logger'
 
 export default function () {
   const app = new Koa()
   
-  
+  app.use(log())
   app.use(cors())
   app.use(bodyParser())
   app.use(router.routes())

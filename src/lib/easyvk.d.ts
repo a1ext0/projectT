@@ -9,6 +9,7 @@ declare module 'easyvk' {
   post(method: string, data?: object): Promise<any>
   is(error: object, easyVkError: string): boolean
   session: {
+    access_token: string
     save(): Promise<any>
     setPath(path: string): Promise<any>
     clear(): void
