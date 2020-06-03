@@ -2,11 +2,13 @@ import cr from './cr';
 import Koa from 'koa'
 import router from '../routers'
 import bodyParser from 'koa-bodyparser'
+import cors from 'koa-cors'
 
 export default function () {
   const app = new Koa()
   
   
+  app.use(cors())
   app.use(bodyParser())
   app.use(router.routes())
   

@@ -18,8 +18,6 @@ class Aes {
     }
   }
   decrypt(msg:string){
-    console.log('qq');
-    
     if (typeof msg == 'string') {
       try {
         return aes.decrypt(msg, cr.aes.secret).toString(crypto.enc.Utf8)
@@ -71,6 +69,25 @@ class Jwt {
     if (typeof msg == 'string') {
       try {
         let decoded = jwt.decode(msg)
+        if (typeof decoded == 'string') {
+          return new Aes().decrypt(decoded)
+        } else {
+          console.error('Aes decrypt expects string')
+          return null
+        }
+      } catch (error) {
+        console.error(error)
+        return null
+      }
+    } else {
+      console.error('Jwt decode expects string')
+      return null
+    }
+  }
+  verify (msg:string) {
+    if (typeof msg == 'string') {
+      try {
+        let decoded = jwt.verify(msg, cr.jwt.secret)
         if (typeof decoded == 'string') {
           return new Aes().decrypt(decoded)
         } else {
