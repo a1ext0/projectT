@@ -18,6 +18,8 @@ class Aes {
     }
   }
   decrypt(msg:string){
+    console.log('qq');
+    
     if (typeof msg == 'string') {
       try {
         return aes.decrypt(msg, cr.aes.secret).toString(crypto.enc.Utf8)

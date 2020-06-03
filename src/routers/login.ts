@@ -1,5 +1,3 @@
-
-
 import sign from '../lib/sign'
 import Router from 'koa-router'
 const router = new Router()
