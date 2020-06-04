@@ -5,7 +5,7 @@ const router = new Router()
 
 router.post('/login', async (ctx, next)=> {
   if (ctx.request.body.ld && typeof ctx.request.body.ld == 'object') {
-    let vkr = vk(ctx.request.body.ld)
+    let vkr = vk.check(ctx.request.body.ld)
     if (vkr) {
 
       try {
@@ -36,6 +36,7 @@ router.use((ctx, next)=>{
   if (ctx.request.body.token) {
     let verified = sign.jwt.verify(ctx.request.body.token)
     if (verified) {
+      ctx.request.body.token = verified
       next()
     } else {
       ctx.status = 401
@@ -45,11 +46,6 @@ router.use((ctx, next)=>{
     ctx.status = 401
     ctx.body = {status: 'Token expected'}
   }
-})
-
-router.post('/chat', (ctx, next)=> {
-  console.log('chat');
-  ctx.body = {status: 'success'}
 })
 
 export default router

@@ -1,14 +1,25 @@
 import easyvk from 'easyvk'
 
-export default function (ctx:any) {
-    if (ctx.username && ctx.password) {
+class Easyvk {
+    check (ctx:any) {
+        if (ctx.username && ctx.password) {
+            return easyvk({
+                username: ctx.username,
+                password: ctx.password,
+                v: '5.107',
+                reauth: true
+            })
+        } else {
+            return null
+        }
+    }
+    auth (ctx:any) {
         return easyvk({
             username: ctx.username,
             password: ctx.password,
-            v: '5.107',
-            reauth: true
+            v: '5.107'
         })
-    } else {
-        return null
     }
 }
+
+export default new Easyvk
