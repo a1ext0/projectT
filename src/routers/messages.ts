@@ -1,11 +1,26 @@
 import Router from 'koa-router';
 const router = new Router();
+import getconversations from '../lib/scripts/messages/getConversations';
 
-router.post('/getconversations', async (ctx) => {
+router.post('/getconversations', async (ctx, next) => {
   console.log('getconversations');
-  if (ctx.request.body.token) {
-    ctx.body = { status: 'success' };
-  }
+  return Promise.resolve().then(async () => {
+    if (ctx.request.body.token && ctx.request.body.query) {
+      try {
+        let res = await getconversations(
+          ctx.request.body.query,
+          ctx.request.body.token
+        );
+        ctx.body = { status: '1', res: res };
+      } catch (error) {
+        ctx.status = 500;
+        ctx.body = { status: 'Server error' };
+      }
+    } else {
+      ctx.status = 400;
+      ctx.body = { status: 'Bad request' };
+    }
+  });
 });
 
 export default router;

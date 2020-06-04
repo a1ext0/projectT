@@ -89,7 +89,10 @@ class Jwt {
       try {
         let decoded = jwt.verify(msg, cr.jwt.secret);
         if (typeof decoded == 'string') {
-          return new Aes().decrypt(decoded);
+          let dec = new Aes().decrypt(decoded);
+          if (dec) {
+            return JSON.parse(dec);
+          }
         } else {
           console.error('Aes decrypt expects string');
           return null;

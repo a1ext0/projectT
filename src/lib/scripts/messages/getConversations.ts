@@ -1,6 +1,6 @@
 import easyvk from '../../vk';
 
-export default async function test(ctx: Context, token: any) {
+export default async function (ctx: Context, token: any) {
   try {
     let offset = ctx.offset; //Получаем сдвиг из параметров запроса
     if (!offset) {
@@ -92,6 +92,8 @@ export default async function test(ctx: Context, token: any) {
     return conversations;
   } catch (e) {
     console.log(e);
+    throw new Error(e);
+    return null;
   }
 }
 
