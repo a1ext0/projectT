@@ -18,6 +18,27 @@ export default async function(ctx:Context, token:any) {
         fields: 'photo_100'
     })
     let conversations: Conversations
+    let chatList: string
+    vkr.items.forEach((item:any, i:number) => {
+      let conv = item.conversation;
+      let last = item.last_message;
+      conversations.a[i].id = conv.peer.id
+      conversations.a[i].t = conv.peer.type
+      //Все беседы в список для дальнейшего запроса
+      if (conv.peer.type === 'chat') {
+        let newId = conv.peer.id - 2000000000 //В беседах используется local id
+        if (!chatList || chatList.length == 0) {
+          chatList += `${newId}`;
+        } else {
+          chatList += `, ${newId}`;
+        }
+      }
+      conversations.a[i].u = conv.unread_count;
+      conversations.a[i].c = conv.can_write.allowed;
+      conversations.a[i].d = last.date;
+      conversations.a[i].fr = last.from_id;
+      conversations.a[i].lt = last.text;
+    })
 } catch (e) {
     
 }
@@ -59,15 +80,15 @@ interface Conversation {
  /**
      * Разрешено ли писать пользователю
   */
- с:boolean
+ c:boolean
  /**
      * Таймстамп отправки последнего сообщения в беседе
   */
  d:number
  /**
-     * Исходящее или входящее было последнее сообщение в беседе
+     * От кого было последнее сообщение
   */
- lo:boolean // TODO: узнать подробнее
+ fr:string
  /**
      * Текст последнего сообщения в беседе
   */
