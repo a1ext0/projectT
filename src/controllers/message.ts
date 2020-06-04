@@ -1,10 +1,8 @@
-import BaseController from '.'
+import BaseController from '.';
 export default class MessageController extends BaseController {
-  constructor(params:any) {
+  constructor(params: any) {
     super(params);
-    this.io.on('msg', this.handleMessage.bind(this))
+    this.io.on('msg', this.handleMessage.bind(this));
   }
-  handleMessage(){
-    
-  }
+  handleMessage() {}
 }

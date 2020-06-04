@@ -1,6 +1,6 @@
-import BaseController from '.'
+import BaseController from '.';
 export default class TestController extends BaseController {
-  constructor(params:any) {
+  constructor(params: any) {
     super(params);
   }
 }
