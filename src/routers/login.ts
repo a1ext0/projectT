@@ -31,12 +31,12 @@ router.post('/login', async (ctx, next) => {
   }
 });
 
-router.use((ctx, next) => {
+router.use(async (ctx, next) => {
   if (ctx.request.body.token) {
     let verified = sign.jwt.verify(ctx.request.body.token);
     if (verified) {
       ctx.request.body.token = verified;
-      next();
+      await next();
     } else {
       ctx.status = 401;
       ctx.body = { status: 'Not valid token' };

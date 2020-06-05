@@ -1,13 +1,13 @@
 import Router from 'koa-router';
 const router = new Router();
-import getconversations from '../lib/scripts/messages/getConversations';
+import getConversations from '../lib/scripts/messages/getConversations';
 
 router.post('/getconversations', async (ctx, next) => {
   console.log('getconversations');
   return Promise.resolve().then(async () => {
     if (ctx.request.body.token && ctx.request.body.query) {
       try {
-        let res = await getconversations(
+        let res = await getConversations(
           ctx.request.body.query,
           ctx.request.body.token
         );

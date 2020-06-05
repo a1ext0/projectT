@@ -12,6 +12,7 @@ export default function () {
   app.use(cors());
   app.use(bodyParser());
   app.use(router.routes());
+  app.use(router.allowedMethods());
 
   const server = app.listen(cr.PORT, cr.HOST, () =>
     console.info(`Сервер запущен на ${cr.HOST}:${cr.PORT}`)
